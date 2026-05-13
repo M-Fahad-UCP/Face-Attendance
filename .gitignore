@@ -1,0 +1,36 @@
+# Virtual environments (never commit — recreate on Render with pip install)
+venv/
+venv310/
+.venv/
+env/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+.eggs/
+dist/
+build/
+
+# Local data & secrets (optional: uncomment if you don't want DB in repo)
+# database/*.db
+# attendance/*.csv
+# database/embeddings/*.npy
+# logs/*.log
+
+# IDE / OS
+.idea/
+.vscode/
+*.swp
+.DS_Store
+Thumbs.db
+
+# Env files with secrets
+.env
+.env.local
+
+# Streamlit
+.streamlit/secrets.toml
