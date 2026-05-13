@@ -1,0 +1,73 @@
+2026-05-13 21:19:20 | INFO | face_attendance.auth | Default admin account created: admin
+2026-05-13 21:23:39 | INFO | face_attendance.auth | Created user: Fahad (id=2)
+2026-05-13 21:23:45 | INFO | face_attendance.face_detector | Loading InsightFace model='buffalo_sc' providers=['CPUExecutionProvider'] det_size=(320, 320)
+2026-05-13 21:23:50 | INFO | face_attendance.face_detector | InsightFace ready (active pack=unknown).
+2026-05-13 21:23:50 | INFO | face_attendance.face_recognizer | Saved embedding for 'Fahad' -> Fahad.npy
+2026-05-13 21:23:50 | INFO | face_attendance.register_user | Registered face template for 'Fahad'.
+2026-05-13 21:25:02 | INFO | face_attendance.face_recognizer | Loaded 1 embeddings into gallery.
+2026-05-13 21:25:06 | INFO | face_attendance.attendance | Attendance marked: Fahad (Muhammad Fahad Azhar)
+2026-05-13 22:40:33 | INFO | face_attendance.face_detector | Loading InsightFace model='buffalo_sc' providers=['CPUExecutionProvider'] det_size=(320, 320)
+2026-05-13 22:40:34 | INFO | face_attendance.face_detector | InsightFace ready (active pack=unknown).
+2026-05-13 22:42:26 | INFO | face_attendance.streamlit_session | User logged out.
+2026-05-13 22:42:26 | WARNING | face_attendance.streamlit_session | Cookie delete failed: 'fa_session'
+2026-05-13 22:42:27 | INFO | face_attendance.streamlit_session | Session restored from cookie for Fahad
+2026-05-13 22:42:31 | INFO | face_attendance.streamlit_session | User logged out.
+2026-05-13 22:42:31 | INFO | face_attendance.streamlit_session | Session restored from cookie for Fahad
+2026-05-13 22:42:32 | INFO | face_attendance.streamlit_session | User logged out.
+2026-05-13 22:42:32 | INFO | face_attendance.streamlit_session | Session restored from cookie for Fahad
+2026-05-13 22:42:34 | INFO | face_attendance.streamlit_session | User logged out.
+2026-05-13 22:42:34 | INFO | face_attendance.streamlit_session | Session restored from cookie for Fahad
+2026-05-13 22:42:36 | INFO | face_attendance.streamlit_session | User logged out.
+2026-05-13 22:42:36 | INFO | face_attendance.streamlit_session | Session restored from cookie for Fahad
+2026-05-13 22:42:44 | INFO | face_attendance.streamlit_session | User logged out.
+2026-05-13 22:42:44 | INFO | face_attendance.streamlit_session | Session restored from cookie for Fahad
+2026-05-13 22:42:45 | INFO | face_attendance.streamlit_session | User logged out.
+2026-05-13 22:42:45 | INFO | face_attendance.streamlit_session | Session restored from cookie for Fahad
+2026-05-13 22:42:53 | INFO | face_attendance.streamlit_session | Session restored from cookie for Fahad
+2026-05-13 22:42:56 | INFO | face_attendance.streamlit_session | User logged out.
+2026-05-13 22:42:56 | INFO | face_attendance.streamlit_session | Session restored from cookie for Fahad
+2026-05-13 22:47:30 | INFO | face_attendance.streamlit_session | User logged out.
+2026-05-13 22:47:30 | INFO | face_attendance.streamlit_session | Session restored from cookie for Fahad
+2026-05-13 22:47:31 | INFO | face_attendance.streamlit_session | User logged out.
+2026-05-13 22:47:32 | INFO | face_attendance.streamlit_session | Session restored from cookie for Fahad
+2026-05-13 22:47:33 | INFO | face_attendance.streamlit_session | User logged out.
+2026-05-13 22:47:33 | INFO | face_attendance.streamlit_session | Session restored from cookie for Fahad
+2026-05-13 22:47:39 | INFO | face_attendance.streamlit_session | Session restored from cookie for Fahad
+2026-05-13 22:47:47 | INFO | face_attendance.streamlit_session | Session restored from cookie for Fahad
+2026-05-13 22:47:48 | INFO | face_attendance.streamlit_session | Session restored from cookie for Fahad
+2026-05-13 23:25:03 | INFO | face_attendance.auth | Added users.department column.
+2026-05-13 23:26:39 | INFO | face_attendance.streamlit_session | User logged out.
+2026-05-13 23:26:39 | WARNING | face_attendance.streamlit_session | Cookie delete failed: 'fa_session'
+2026-05-13 23:26:39 | INFO | face_attendance.streamlit_session | Session restored from cookie for Fahad
+2026-05-13 23:26:41 | INFO | face_attendance.streamlit_session | User logged out.
+2026-05-13 23:26:41 | INFO | face_attendance.streamlit_session | Session restored from cookie for Fahad
+2026-05-13 23:26:49 | INFO | face_attendance.streamlit_session | User logged out.
+2026-05-13 23:26:50 | INFO | face_attendance.streamlit_session | Session restored from cookie for Fahad
+2026-05-13 23:27:18 | INFO | face_attendance.streamlit_session | Session restored from cookie for Fahad
+2026-05-14 00:06:26 | INFO | face_attendance.streamlit_session | User logged out.
+2026-05-14 00:06:26 | WARNING | face_attendance.streamlit_session | Cookie delete failed: 'fa_session'
+2026-05-14 00:06:26 | WARNING | face_attendance.streamlit_session | Cookie delete failed: 'fa_session'
+2026-05-14 00:06:26 | WARNING | face_attendance.streamlit_session | Cookie delete failed: 'fa_session'
+2026-05-14 00:08:37 | INFO | face_attendance.streamlit_session | Session restored from cookie for admin
+2026-05-14 00:08:40 | INFO | face_attendance.streamlit_session | User logged out.
+2026-05-14 00:08:40 | WARNING | face_attendance.streamlit_session | Cookie delete failed: 'fa_session'
+2026-05-14 00:08:40 | WARNING | face_attendance.streamlit_session | Cookie delete failed: 'fa_session'
+2026-05-14 00:09:24 | INFO | face_attendance.face_detector | Loading InsightFace model='buffalo_sc' providers=['CPUExecutionProvider'] det_size=(320, 320)
+2026-05-14 00:09:24 | INFO | face_attendance.face_detector | InsightFace ready (active pack=unknown).
+2026-05-14 00:09:27 | INFO | face_attendance.camera | Burst finished: reads=104 yielded=76
+2026-05-14 00:10:18 | INFO | face_attendance.streamlit_session | Session restored from cookie for Fahad
+2026-05-14 00:10:32 | INFO | face_attendance.streamlit_session | User logged out.
+2026-05-14 00:10:32 | WARNING | face_attendance.streamlit_session | Cookie delete failed: 'fa_session'
+2026-05-14 00:10:32 | WARNING | face_attendance.streamlit_session | Cookie delete failed: 'fa_session'
+2026-05-14 00:11:06 | INFO | face_attendance.streamlit_session | Session restored from cookie for admin
+2026-05-14 00:11:12 | INFO | face_attendance.streamlit_session | Session restored from cookie for admin
+2026-05-14 00:11:15 | INFO | face_attendance.streamlit_session | User logged out.
+2026-05-14 00:11:15 | WARNING | face_attendance.streamlit_session | Cookie delete failed: 'fa_session'
+2026-05-14 00:11:15 | WARNING | face_attendance.streamlit_session | Cookie delete failed: 'fa_session'
+2026-05-14 00:11:36 | INFO | face_attendance.streamlit_session | Session restored from cookie for admin
+2026-05-14 00:12:07 | INFO | face_attendance.streamlit_session | User logged out.
+2026-05-14 00:12:07 | WARNING | face_attendance.streamlit_session | Cookie delete failed: 'fa_session'
+2026-05-14 00:12:07 | WARNING | face_attendance.streamlit_session | Cookie delete failed: 'fa_session'
+2026-05-14 00:12:52 | INFO | face_attendance.camera | Burst finished: reads=104 yielded=76
+2026-05-14 00:14:14 | INFO | face_attendance.streamlit_session | Session restored from cookie for Fahad
+2026-05-14 00:14:28 | INFO | face_attendance.camera | Burst finished: reads=107 yielded=79

@@ -1,0 +1,314 @@
+/* Face Attendance — aligns with Streamlit theme variables (Settings → Theme) */
+.stApp {
+  font-family: "Inter", "Segoe UI", system-ui, -apple-system, sans-serif !important;
+}
+
+:root {
+  --fa-font: "Inter", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --fa-radius-sm: 8px;
+  --fa-radius-md: 12px;
+  --fa-radius-lg: 16px;
+  --fa-space-1: 0.35rem;
+  --fa-space-2: 0.55rem;
+  --fa-space-3: 0.85rem;
+  --fa-space-4: 1.1rem;
+  --fa-space-5: 1.5rem;
+  --fa-space-6: 2rem;
+  --fa-shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.06);
+  --fa-shadow-md: 0 8px 24px rgba(15, 23, 42, 0.08);
+  --fa-shadow-lg: 0 18px 50px rgba(15, 23, 42, 0.12);
+  --fa-accent: #4f46e5;
+  --fa-accent-600: #4338ca;
+  --fa-accent-soft: rgba(79, 70, 229, 0.1);
+  --fa-surface: #ffffff;
+  --fa-surface-muted: #f8fafc;
+  --fa-border: rgba(15, 23, 42, 0.08);
+  --fa-text: #0f172a;
+  --fa-text-muted: #64748b;
+  --fa-danger: #b91c1c;
+  --fa-success: #047857;
+}
+
+.block-container {
+  padding-top: var(--fa-space-5) !important;
+  padding-bottom: var(--fa-space-6) !important;
+  max-width: 1200px;
+}
+
+header[data-testid="stHeader"] {
+  background: transparent;
+}
+
+div[data-testid="stSidebar"] {
+  background: var(--secondary-background-color, var(--fa-surface-muted));
+  border-right: 1px solid var(--border-color, var(--fa-border));
+}
+
+div[data-testid="stSidebar"] .block-container {
+  padding-top: var(--fa-space-4);
+}
+
+.fa-brand {
+  font-family: var(--fa-font);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--text-color, var(--fa-text));
+  font-size: 1.05rem;
+  margin: 0 0 var(--fa-space-2) 0;
+}
+
+.fa-brand-sub {
+  font-size: 0.78rem;
+  color: var(--text-color, var(--fa-text-muted));
+  opacity: 0.85;
+  margin: 0 0 var(--fa-space-4) 0;
+}
+
+/* Login hero (premium branding) — product ~20px+ for readability */
+.fa-login-product {
+  font-family: var(--fa-font);
+  font-weight: 700;
+  font-size: 1.25rem;
+  letter-spacing: -0.03em;
+  color: var(--text-color, var(--fa-text));
+  margin: 0 0 0.35rem 0;
+  line-height: 1.15;
+}
+.fa-login-tagline {
+  font-size: 1.0625rem;
+  font-weight: 600;
+  color: var(--text-color, var(--fa-text));
+  opacity: 0.92;
+  margin: 0 0 0.45rem 0;
+  line-height: 1.35;
+}
+.fa-login-sub {
+  font-size: 0.8125rem;
+  line-height: 1.45;
+  color: var(--text-color, var(--fa-text-muted));
+  margin: 0 0 0.85rem 0;
+  max-width: 32rem;
+}
+
+.fa-role-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.2rem 0.55rem;
+  border-radius: 999px;
+  border: 1px solid var(--border-color, var(--fa-border));
+  background: var(--secondary-background-color, var(--fa-surface));
+  color: var(--text-color, var(--fa-text-muted));
+  opacity: 0.9;
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.fa-nav-note {
+  font-size: 0.72rem;
+  color: var(--fa-text-muted);
+  margin-top: var(--fa-space-5);
+}
+
+.fa-card {
+  background: var(--fa-surface);
+  border: 1px solid var(--fa-border);
+  border-radius: var(--fa-radius-md);
+  box-shadow: var(--fa-shadow-sm);
+  padding: var(--fa-space-5);
+}
+
+.fa-card-elevated {
+  box-shadow: var(--fa-shadow-md);
+}
+
+.fa-login-brand {
+  margin: 0 0 0.35rem 0;
+  padding: 0 0 0.25rem 0;
+}
+
+.fa-muted {
+  color: var(--text-color, var(--fa-text-muted));
+  opacity: 0.88;
+  font-size: 0.85rem;
+}
+
+.fa-stepper {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  margin: var(--fa-space-4) 0;
+  font-size: 0.8rem;
+  color: var(--fa-text-muted);
+}
+
+.fa-step-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: #cbd5e1;
+}
+.fa-step-dot.active {
+  background: var(--fa-accent);
+}
+
+.fa-empty {
+  border: 1px dashed var(--fa-border);
+  border-radius: var(--fa-radius-md);
+  padding: var(--fa-space-6);
+  text-align: center;
+  color: var(--fa-text-muted);
+  background: var(--fa-surface-muted);
+}
+
+.fa-metric-grid div[data-testid="stMetricValue"] {
+  font-size: 1.65rem;
+  font-weight: 700;
+}
+
+div[data-testid="stTabs"] button {
+  font-weight: 600;
+}
+
+.stButton > button[kind="primary"] {
+  background-color: var(--fa-accent);
+  border-color: var(--fa-accent);
+}
+.stButton > button[kind="primary"]:hover {
+  background-color: var(--fa-accent-600);
+  border-color: var(--fa-accent-600);
+}
+
+/* --- SaaS sidebar --- */
+.fa-sidebar-header {
+  margin-bottom: 0.75rem;
+}
+.fa-sidebar-logo {
+  display: block;
+  font-weight: 700;
+  font-size: 1.05rem;
+  letter-spacing: -0.02em;
+  color: var(--text-color, var(--fa-text));
+}
+.fa-sidebar-tagline {
+  display: block;
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--fa-text-muted);
+  margin-top: 0.15rem;
+}
+.fa-sidebar-user {
+  margin-bottom: 0.5rem;
+}
+.fa-sidebar-username {
+  font-size: 0.82rem;
+  color: var(--text-color, var(--fa-text-muted));
+  opacity: 0.9;
+  margin-top: 0.35rem;
+}
+
+.fa-session-note {
+  font-size: 0.72rem;
+  line-height: 1.45;
+  color: var(--text-color, var(--fa-text-muted));
+  padding: 0.65rem 0.75rem;
+  margin-top: 1rem;
+  border-radius: var(--fa-radius-sm);
+  background: var(--secondary-background-color, rgba(79, 70, 229, 0.06));
+  border: 1px solid var(--border-color, var(--fa-border));
+}
+.fa-nav-section {
+  font-size: 0.68rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--fa-text-muted);
+  margin: 0.5rem 0 0.35rem 0;
+}
+.fa-nav-item {
+  padding: 0.45rem 0.65rem;
+  border-radius: var(--fa-radius-sm);
+  margin-bottom: 0.25rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--fa-text);
+  background: var(--fa-accent-soft);
+  border: 1px solid var(--fa-border);
+}
+.fa-nav-active {
+  background: linear-gradient(135deg, rgba(79, 70, 229, 0.18), rgba(79, 70, 229, 0.06));
+  border-color: rgba(79, 70, 229, 0.35);
+}
+.fa-nav-divider {
+  height: 1px;
+  background: var(--fa-border);
+  margin: 0.75rem 0;
+}
+
+div[data-testid="stSidebar"] .stButton > button {
+  justify-content: flex-start;
+  text-align: left;
+  border-radius: var(--fa-radius-sm);
+  font-weight: 600;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+div[data-testid="stSidebar"] .stButton > button:hover {
+  border-color: rgba(79, 70, 229, 0.45);
+}
+
+/* Recognition summary strip */
+.fa-result-card {
+  border: 1px solid var(--fa-border);
+  border-radius: var(--fa-radius-md);
+  padding: 0.75rem 1rem 0.25rem 1rem;
+  margin: 0.75rem 0 1rem 0;
+  background: var(--fa-surface-muted);
+}
+
+/* Dataframe / tables */
+div[data-testid="stDataFrame"] {
+  border: 1px solid var(--border-color, var(--fa-border));
+  border-radius: var(--fa-radius-sm);
+}
+
+/* Streamlit dark theme: custom HTML + sidebar polish */
+html[data-theme="dark"] .fa-login-brand,
+html[data-theme="dark"] .fa-empty,
+html[data-theme="dark"] .fa-result-card {
+  background: #161b22 !important;
+  border-color: #30363d !important;
+  color: #e6edf3 !important;
+}
+html[data-theme="dark"] .fa-login-product,
+html[data-theme="dark"] .fa-login-tagline {
+  color: #e6edf3 !important;
+}
+html[data-theme="dark"] .fa-login-sub {
+  color: #8b949e !important;
+}
+html[data-theme="dark"] .fa-session-note {
+  background: #21262d !important;
+  border-color: #30363d !important;
+  color: #8b949e !important;
+}
+html[data-theme="dark"] .fa-nav-item {
+  background: #21262d !important;
+  border-color: #30363d !important;
+  color: #e6edf3 !important;
+}
+html[data-theme="dark"] .fa-nav-active {
+  border-color: #818cf8 !important;
+  background: linear-gradient(
+    135deg,
+    rgba(129, 140, 248, 0.22),
+    rgba(129, 140, 248, 0.08)
+  ) !important;
+}
+html[data-theme="dark"] .fa-role-pill {
+  background: #21262d !important;
+  border-color: #30363d !important;
+  color: #8b949e !important;
+}
