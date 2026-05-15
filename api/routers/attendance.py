@@ -12,7 +12,13 @@ from src import auth
 from src.attendance_manager import attendance_csv_bytes, get_attendance, reset_attendance
 from src.auth import ROLE_ADMIN, ROLE_USER
 from src.activity_log import append_event
-from src.services.attendance_service import mark_for_username, mark_from_boxes
+from src.services.attendance_service import (
+    admin_manual_mark,
+    checkout_user,
+    mark_for_username,
+    mark_from_boxes,
+)
+from api.schemas import ManualMarkRequest, MessageResponse
 from src.services.recognition_service import recognize_image_bytes
 from src.services.reports_service import (
     dataframe_to_records,
@@ -143,8 +149,30 @@ def export_excel(
     )
 
 
+@router.post("/check-out", response_model=MessageResponse)
+def check_out(user: auth.User = Depends(get_current_user)) -> MessageResponse:
+    _reject_admin_mark(user)
+    result = checkout_user(user)
+    return MessageResponse(ok=result.ok, message=result.message)
+
+
+@router.post("/manual", response_model=MarkAttendanceResponse)
+def manual_mark(
+    body: ManualMarkRequest,
+    admin: auth.User = Depends(require_admin),
+) -> MarkAttendanceResponse:
+    result = admin_manual_mark(admin, body.username.strip(), body.reason.strip())
+    return MarkAttendanceResponse(
+        ok=result.ok,
+        message=result.message,
+        username=result.username,
+        full_name=result.full_name,
+        already_today=result.already_today,
+    )
+
+
 @router.post("/reset")
 def reset_log(admin: auth.User = Depends(require_admin)) -> dict[str, str]:
     reset_attendance()
-    append_event("admin", "Attendance CSV reset", username=admin.username)
+    append_event("admin", "Attendance log reset", username=admin.username)
     return {"message": "Attendance log cleared."}

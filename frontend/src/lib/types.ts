@@ -25,9 +25,11 @@ export type AttendanceRecord = {
   full_name: string;
   date: string;
   time: string;
+  check_out_time?: string;
+  status?: string;
+  record_status?: string;
   department?: string;
   member_role?: string;
-  record_status?: string;
 };
 
 export type Member = {
@@ -36,4 +38,14 @@ export type Member = {
   full_name: string;
   department: string;
   has_face_template: boolean;
+};
+
+export type UserDashboard = {
+  username: string;
+  full_name: string;
+  checked_in_today: boolean;
+  checked_out_today: boolean;
+  is_late: boolean;
+  check_in_time: string;
+  check_out_time: string;
 };

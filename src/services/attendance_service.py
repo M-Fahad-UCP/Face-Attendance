@@ -7,8 +7,15 @@ from typing import Optional
 
 from src import auth
 from src.activity_log import append_event
-from src.attendance_manager import already_marked_today, mark_attendance
-from src.auth import ROLE_USER, User
+from src.attendance_manager import (
+    already_marked_today,
+    get_today_record,
+    has_checked_out_today,
+    mark_attendance,
+    mark_check_out,
+    mark_manual_present,
+)
+from src.auth import ROLE_ADMIN, ROLE_USER, User
 from src.face_recognizer import FaceBoxResult
 from src.services.recognition_service import primary_username
 
@@ -20,6 +27,13 @@ class MarkResult:
     username: Optional[str] = None
     full_name: Optional[str] = None
     already_today: bool = False
+    checked_out: bool = False
+
+
+@dataclass
+class CheckoutResult:
+    ok: bool
+    message: str
 
 
 def mark_from_boxes(actor: User, boxes: list[FaceBoxResult]) -> MarkResult:
@@ -44,30 +58,84 @@ def mark_for_username(actor: User, recognized_username: str) -> MarkResult:
         )
 
     if already_marked_today(recognized_username):
+        rec = get_today_record(recognized_username)
+        status = rec.get("status", "on_time") if rec else "on_time"
+        late_note = " (late)" if status == "late" else ""
         return MarkResult(
             ok=True,
-            message=f"Already checked in today for {row.full_name}.",
+            message=f"Already checked in today for {row.full_name}{late_note}.",
             username=recognized_username,
             full_name=row.full_name,
             already_today=True,
+            checked_out=has_checked_out_today(recognized_username),
         )
 
     ok = mark_attendance(recognized_username, row.full_name)
     if ok:
+        rec = get_today_record(recognized_username)
+        status = rec.get("status", "on_time") if rec else "on_time"
         append_event(
             "attendance",
-            f"Member checked in: {row.full_name}",
+            f"Member checked in: {row.full_name} ({status})",
             username=recognized_username,
         )
         return MarkResult(
             ok=True,
-            message=f"Attendance saved for {row.full_name}.",
+            message=f"Check-in saved for {row.full_name}"
+            + (" — marked late." if status == "late" else "."),
             username=recognized_username,
             full_name=row.full_name,
         )
     return MarkResult(
         ok=False,
-        message=f"{recognized_username} already marked today.",
+        message=f"{recognized_username} could not be marked.",
         username=recognized_username,
-        already_today=True,
     )
+
+
+def checkout_user(actor: User, username: Optional[str] = None) -> CheckoutResult:
+    target = username or actor.username
+    if actor.role == ROLE_USER and target != actor.username:
+        return CheckoutResult(ok=False, message="You can only check out for yourself.")
+    if actor.role == ROLE_ADMIN:
+        return CheckoutResult(ok=False, message="Administrators cannot check out.")
+
+    if not already_marked_today(target):
+        return CheckoutResult(ok=False, message="No check-in found for today.")
+    if has_checked_out_today(target):
+        return CheckoutResult(ok=False, message="Already checked out for today.")
+
+    row = auth.get_user_by_username(target)
+    if mark_check_out(target):
+        append_event("attendance", f"Member checked out: {row.full_name if row else target}", username=target)
+        return CheckoutResult(ok=True, message=f"Check-out saved for {row.full_name if row else target}.")
+    return CheckoutResult(ok=False, message="Check-out failed.")
+
+
+def admin_manual_mark(admin: User, username: str, reason: str) -> MarkResult:
+    if admin.role != ROLE_ADMIN:
+        return MarkResult(ok=False, message="Admin only.")
+    row = auth.get_user_by_username(username)
+    if row is None:
+        return MarkResult(ok=False, message="User not found.")
+    if already_marked_today(username):
+        return MarkResult(
+            ok=True,
+            message=f"{username} already checked in today.",
+            username=username,
+            full_name=row.full_name,
+            already_today=True,
+        )
+    if mark_manual_present(username, row.full_name, reason=reason):
+        append_event(
+            "admin",
+            f"Manual attendance: {row.full_name} — {reason}",
+            username=username,
+        )
+        return MarkResult(
+            ok=True,
+            message=f"Manual check-in recorded for {row.full_name}.",
+            username=username,
+            full_name=row.full_name,
+        )
+    return MarkResult(ok=False, message="Could not record manual attendance.")

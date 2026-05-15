@@ -6,7 +6,7 @@ from typing import Any, List
 
 import pandas as pd
 
-from src.attendance_manager import get_attendance
+from src.attendance_manager import get_attendance, get_today_record, has_checked_out_today
 from src.auth import ROLE_USER, User, list_users
 from src.activity_log import recent_events
 from src.analytics import summarize_presence
@@ -34,13 +34,17 @@ def admin_dashboard(*, match_scores: List[float] | None = None) -> dict[str, Any
 
 
 def user_dashboard(user: User) -> dict[str, Any]:
-    from src.attendance_manager import already_marked_today
-
-    marked = already_marked_today(user.username)
+    rec = get_today_record(user.username)
+    checked_in = rec is not None
+    checked_out = has_checked_out_today(user.username) if checked_in else False
     return {
         "username": user.username,
         "full_name": user.full_name,
-        "checked_in_today": marked,
+        "checked_in_today": checked_in,
+        "checked_out_today": checked_out,
+        "is_late": rec.get("status") == "late" if rec else False,
+        "check_in_time": rec.get("time", "") if rec else "",
+        "check_out_time": rec.get("check_out_time", "") if rec else "",
     }
 
 

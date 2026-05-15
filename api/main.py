@@ -13,11 +13,14 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from api.routers import analytics, attendance, auth, dashboard, recognition, settings, users
+from api.routers import audit
 from src import auth as auth_module
+from src.attendance_manager import init_attendance_db
 from src.config import ensure_directories
 
 ensure_directories()
 auth_module.init_db()
+init_attendance_db()
 
 _cors_origins = os.environ.get(
     "CORS_ORIGINS",
@@ -48,6 +51,7 @@ app.include_router(users.router, prefix=API_PREFIX)
 app.include_router(dashboard.router, prefix=API_PREFIX)
 app.include_router(analytics.router, prefix=API_PREFIX)
 app.include_router(settings.router, prefix=API_PREFIX)
+app.include_router(audit.router, prefix=API_PREFIX)
 
 
 @app.get("/api/health")

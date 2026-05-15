@@ -22,8 +22,21 @@ export function ReportsTable({
   const [dateFrom, setDateFrom] = useState("");
   const [dateTo, setDateTo] = useState("");
   const [todayOnly, setTodayOnly] = useState(defaultTodayOnly);
-  const [department] = useState("(All)");
+  const [department, setDepartment] = useState("(All)");
   const [memberFilter, setMemberFilter] = useState("");
+  const [departments, setDepartments] = useState<string[]>([]);
+
+  useEffect(() => {
+    if (!isAdmin) return;
+    api<import("@/lib/types").Member[]>("/api/users")
+      .then((members) => {
+        const depts = Array.from(
+          new Set(members.map((m) => (m.department || "").trim()).filter(Boolean))
+        ).sort();
+        setDepartments(depts);
+      })
+      .catch(() => {});
+  }, [isAdmin]);
 
   const load = useCallback(() => {
     const params = new URLSearchParams();
@@ -82,10 +95,27 @@ export function ReportsTable({
           <Input value={dateTo} onChange={(e) => setDateTo(e.target.value)} placeholder="YYYY-MM-DD" />
         </div>
         {isAdmin && (
-          <div>
-            <Label>Member username</Label>
-            <Input value={memberFilter} onChange={(e) => setMemberFilter(e.target.value)} />
-          </div>
+          <>
+            <div>
+              <Label>Member username</Label>
+              <Input value={memberFilter} onChange={(e) => setMemberFilter(e.target.value)} />
+            </div>
+            <div>
+              <Label>Department</Label>
+              <select
+                className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm"
+                value={department}
+                onChange={(e) => setDepartment(e.target.value)}
+              >
+                <option value="(All)">(All)</option>
+                {departments.map((d) => (
+                  <option key={d} value={d}>
+                    {d}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </>
         )}
       </div>
       <label className="mt-2 flex items-center gap-2 text-sm">
@@ -113,7 +143,9 @@ export function ReportsTable({
               <th className="p-2">Name</th>
               {isAdmin && <th className="p-2">Department</th>}
               <th className="p-2">Date</th>
-              <th className="p-2">Time</th>
+              <th className="p-2">Check-in</th>
+              <th className="p-2">Check-out</th>
+              <th className="p-2">Status</th>
             </tr>
           </thead>
           <tbody>
@@ -124,6 +156,8 @@ export function ReportsTable({
                 {isAdmin && <td className="p-2">{r.department}</td>}
                 <td className="p-2">{r.date}</td>
                 <td className="p-2">{r.time}</td>
+                <td className="p-2">{r.check_out_time || "—"}</td>
+                <td className="p-2">{r.record_status || r.status || "—"}</td>
               </tr>
             ))}
           </tbody>

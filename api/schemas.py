@@ -88,6 +88,20 @@ class UserDashboardOut(BaseModel):
     username: str
     full_name: str
     checked_in_today: bool
+    checked_out_today: bool = False
+    is_late: bool = False
+    check_in_time: str = ""
+    check_out_time: str = ""
+
+
+class ManualMarkRequest(BaseModel):
+    username: str
+    reason: str = "Manual override"
+
+
+class UserProfileUpdate(BaseModel):
+    full_name: Optional[str] = None
+    department: Optional[str] = None
 
 
 class AnalyticsOut(BaseModel):

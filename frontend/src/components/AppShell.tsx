@@ -11,6 +11,7 @@ const ADMIN_NAV = [
   { href: "/admin/members", label: "Members" },
   { href: "/admin/reports", label: "Reports" },
   { href: "/admin/analytics", label: "Analytics" },
+  { href: "/admin/audit", label: "Audit log" },
   { href: "/admin/settings", label: "Settings" },
 ];
 

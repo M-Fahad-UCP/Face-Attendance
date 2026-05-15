@@ -5,7 +5,11 @@ from fastapi import APIRouter, Depends, File, Form, HTTPException, Response, Upl
 from api.deps import create_session_token, get_current_user, user_to_out
 from api.schemas import LoginRequest, LoginResponse, MessageResponse, SignupJsonRequest, UserOut
 from src import auth
-from src.config import SESSION_COOKIE_NAME, SESSION_TIMEOUT_SECONDS
+from src.config import (
+    SESSION_COOKIE_NAME,
+    SESSION_TIMEOUT_SECONDS,
+    is_production_env,
+)
 from src.services.login_guard import clear_failed_attempts, is_locked, register_failed_attempt
 from src.services.signup_service import SignupError, complete_signup
 
@@ -13,11 +17,13 @@ router = APIRouter(prefix="/auth", tags=["auth"])
 
 
 def _set_session_cookie(response: Response, token: str) -> None:
+    prod = is_production_env()
     response.set_cookie(
         key=SESSION_COOKIE_NAME,
         value=token,
         httponly=True,
-        samesite="lax",
+        secure=prod,
+        samesite="none" if prod else "lax",
         max_age=SESSION_TIMEOUT_SECONDS,
         path="/",
     )

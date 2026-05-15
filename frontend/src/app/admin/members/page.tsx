@@ -16,6 +16,11 @@ export default function AdminMembersPage() {
   const [files, setFiles] = useState<File[]>([]);
   const [msg, setMsg] = useState("");
   const [pendingDelete, setPendingDelete] = useState<string | null>(null);
+  const [editUser, setEditUser] = useState<string | null>(null);
+  const [editName, setEditName] = useState("");
+  const [editDept, setEditDept] = useState("");
+  const [manualUser, setManualUser] = useState("");
+  const [manualReason, setManualReason] = useState("");
 
   const load = useCallback(() => {
     api<Member[]>("/api/users").then(setMembers).catch(console.error);
@@ -53,6 +58,35 @@ export default function AdminMembersPage() {
       load();
     } catch (err) {
       setMsg(err instanceof Error ? err.message : "Failed");
+    }
+  }
+
+  async function saveEdit(username: string) {
+    try {
+      await api(`/api/users/${encodeURIComponent(username)}`, {
+        method: "PATCH",
+        json: { full_name: editName, department: editDept },
+      });
+      setEditUser(null);
+      setMsg("Profile updated.");
+      load();
+    } catch (err) {
+      setMsg(err instanceof Error ? err.message : "Update failed");
+    }
+  }
+
+  async function manualMark() {
+    if (!manualUser.trim()) return;
+    try {
+      const res = await api<{ message: string }>("/api/attendance/manual", {
+        method: "POST",
+        json: { username: manualUser.trim(), reason: manualReason || "Manual" },
+      });
+      setMsg(res.message);
+      setManualUser("");
+      setManualReason("");
+    } catch (err) {
+      setMsg(err instanceof Error ? err.message : "Manual mark failed");
     }
   }
 
@@ -101,6 +135,23 @@ export default function AdminMembersPage() {
         </form>
         {msg && <p className="mt-2 text-sm text-slate-600">{msg}</p>}
       </Card>
+      <Card className="mt-6">
+        <h2 className="font-semibold">Manual attendance</h2>
+        <p className="text-sm text-slate-500">Mark a member present today without face recognition.</p>
+        <div className="mt-3 grid gap-3 sm:grid-cols-3">
+          <Input
+            placeholder="Username"
+            value={manualUser}
+            onChange={(e) => setManualUser(e.target.value)}
+          />
+          <Input
+            placeholder="Reason (optional)"
+            value={manualReason}
+            onChange={(e) => setManualReason(e.target.value)}
+          />
+          <Button onClick={manualMark}>Mark present today</Button>
+        </div>
+      </Card>
       <div className="mt-8">
         <Input
           placeholder="Search members"
@@ -122,13 +173,46 @@ export default function AdminMembersPage() {
                   {m.has_face_template ? "Face template OK" : "Missing template"}
                 </p>
               </div>
-              <Button variant="danger" onClick={() => setPendingDelete(m.username)}>
-                Delete
-              </Button>
+              <div className="flex gap-2">
+                <Button
+                  variant="secondary"
+                  onClick={() => {
+                    setEditUser(m.username);
+                    setEditName(m.full_name);
+                    setEditDept(m.department || "");
+                  }}
+                >
+                  Edit
+                </Button>
+                <Button variant="danger" onClick={() => setPendingDelete(m.username)}>
+                  Delete
+                </Button>
+              </div>
             </li>
           ))}
         </ul>
       </div>
+      {editUser && (
+        <Card className="mt-4">
+          <h3 className="font-semibold">Edit {editUser}</h3>
+          <div className="mt-3 grid gap-3 sm:grid-cols-2">
+            <div>
+              <Label>Full name</Label>
+              <Input value={editName} onChange={(e) => setEditName(e.target.value)} />
+            </div>
+            <div>
+              <Label>Department</Label>
+              <Input value={editDept} onChange={(e) => setEditDept(e.target.value)} />
+            </div>
+          </div>
+          <div className="mt-3 flex gap-2">
+            <Button onClick={() => saveEdit(editUser)}>Save</Button>
+            <Button variant="secondary" onClick={() => setEditUser(null)}>
+              Cancel
+            </Button>
+          </div>
+        </Card>
+      )}
       {pendingDelete && (
         <Card className="mt-4 border-red-200">
           <p>Delete <strong>{pendingDelete}</strong>? This removes embeddings and images.</p>

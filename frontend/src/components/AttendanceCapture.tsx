@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { api } from "@/lib/api";
-import type { RecognizeResult } from "@/lib/types";
+import type { RecognizeResult, UserDashboard } from "@/lib/types";
 import { Button, Card } from "./ui";
 
 type Props = {
@@ -18,7 +18,16 @@ export function AttendanceCapture({ onMarked }: Props) {
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const [cameraOn, setCameraOn] = useState(false);
+  const [todayStatus, setTodayStatus] = useState<UserDashboard | null>(null);
   const streamRef = useRef<MediaStream | null>(null);
+
+  const loadStatus = useCallback(() => {
+    api<UserDashboard>("/api/dashboard/user").then(setTodayStatus).catch(() => {});
+  }, []);
+
+  useEffect(() => {
+    loadStatus();
+  }, [loadStatus]);
 
   const stopCamera = useCallback(() => {
     streamRef.current?.getTracks().forEach((t) => t.stop());
@@ -71,7 +80,27 @@ export function AttendanceCapture({ onMarked }: Props) {
   function notifyMarked(res: { ok: boolean; message: string; already_today?: boolean }) {
     setMessage(res.message);
     if (res.ok || res.already_today) {
+      loadStatus();
       onMarked?.();
+    }
+  }
+
+  async function checkOut() {
+    setLoading(true);
+    setMessage("");
+    try {
+      const res = await api<{ ok: boolean; message: string }>("/api/attendance/check-out", {
+        method: "POST",
+      });
+      setMessage(res.message);
+      if (res.ok) {
+        loadStatus();
+        onMarked?.();
+      }
+    } catch (e) {
+      setMessage(e instanceof Error ? e.message : "Check-out failed");
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -189,10 +218,29 @@ export function AttendanceCapture({ onMarked }: Props) {
     message.includes("saved") ||
     message.includes("Saved") ||
     message.includes("Already checked") ||
-    message.includes("checked in");
+    message.includes("checked in") ||
+    message.includes("Check-out");
 
   return (
     <div className="space-y-6">
+      {todayStatus?.checked_in_today && (
+        <Card>
+          <p className="text-sm text-slate-700">
+            Checked in at <strong>{todayStatus.check_in_time}</strong>
+            {todayStatus.is_late && (
+              <span className="ml-2 rounded bg-amber-100 px-2 py-0.5 text-amber-800">Late</span>
+            )}
+            {todayStatus.checked_out_today && (
+              <span className="ml-2">· Out at <strong>{todayStatus.check_out_time}</strong></span>
+            )}
+          </p>
+          {!todayStatus.checked_out_today && (
+            <Button className="mt-3" onClick={checkOut} disabled={loading}>
+              Check out now
+            </Button>
+          )}
+        </Card>
+      )}
       <Card>
         <h2 className="text-lg font-semibold text-slate-900">Mark attendance</h2>
         <p className="mt-1 text-sm text-slate-500">

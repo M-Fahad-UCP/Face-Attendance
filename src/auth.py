@@ -256,6 +256,35 @@ def delete_user(username: str) -> bool:
     return deleted
 
 
+def update_user_profile(
+    username: str,
+    *,
+    full_name: Optional[str] = None,
+    department: Optional[str] = None,
+) -> bool:
+    """Update member profile fields (not password or role)."""
+    sets: list[str] = []
+    params: list = []
+    if full_name is not None:
+        sets.append("full_name = ?")
+        params.append(full_name.strip())
+    if department is not None:
+        sets.append("department = ?")
+        params.append(department.strip())
+    if not sets:
+        return False
+    params.append(username)
+    with _connect() as conn:
+        cur = conn.execute(
+            f"UPDATE users SET {', '.join(sets)} WHERE username = ? AND role = ?",
+            (*params, ROLE_USER),
+        )
+        ok = cur.rowcount > 0
+    if ok:
+        log.info("Updated profile for user: %s", username)
+    return ok
+
+
 def change_password(username: str, new_password: str) -> bool:
     pw_hash = bcrypt.hashpw(new_password.encode("utf-8"), bcrypt.gensalt())
     with _connect() as conn:

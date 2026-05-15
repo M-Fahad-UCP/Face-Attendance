@@ -39,7 +39,12 @@ def enrich_attendance_with_members(df: pd.DataFrame, users: list[User]) -> pd.Da
         role_map[u.username] = u.role
     out["department"] = out["username"].astype(str).map(lambda x: dept.get(x, ""))
     out["member_role"] = out["username"].astype(str).map(lambda x: role_map.get(x, ""))
-    out["record_status"] = "Check-in"
+    if "record_status" not in out.columns:
+        out["record_status"] = "Check-in"
+    if "check_out_time" not in out.columns:
+        out["check_out_time"] = ""
+    if "status" not in out.columns:
+        out["status"] = ""
     return out
 
 
