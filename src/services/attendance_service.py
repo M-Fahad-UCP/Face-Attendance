@@ -58,12 +58,9 @@ def mark_for_username(actor: User, recognized_username: str) -> MarkResult:
         )
 
     if already_marked_today(recognized_username):
-        rec = get_today_record(recognized_username)
-        status = rec.get("status", "on_time") if rec else "on_time"
-        late_note = " (late)" if status == "late" else ""
         return MarkResult(
             ok=True,
-            message=f"Already checked in today for {row.full_name}{late_note}.",
+            message=f"Already checked in today for {row.full_name}.",
             username=recognized_username,
             full_name=row.full_name,
             already_today=True,
@@ -72,17 +69,14 @@ def mark_for_username(actor: User, recognized_username: str) -> MarkResult:
 
     ok = mark_attendance(recognized_username, row.full_name)
     if ok:
-        rec = get_today_record(recognized_username)
-        status = rec.get("status", "on_time") if rec else "on_time"
         append_event(
             "attendance",
-            f"Member checked in: {row.full_name} ({status})",
+            f"Member checked in: {row.full_name}",
             username=recognized_username,
         )
         return MarkResult(
             ok=True,
-            message=f"Check-in saved for {row.full_name}"
-            + (" — marked late." if status == "late" else "."),
+            message=f"Check-in saved for {row.full_name}.",
             username=recognized_username,
             full_name=row.full_name,
         )
@@ -107,8 +101,15 @@ def checkout_user(actor: User, username: Optional[str] = None) -> CheckoutResult
 
     row = auth.get_user_by_username(target)
     if mark_check_out(target):
-        append_event("attendance", f"Member checked out: {row.full_name if row else target}", username=target)
-        return CheckoutResult(ok=True, message=f"Check-out saved for {row.full_name if row else target}.")
+        append_event(
+            "attendance",
+            f"Member checked out: {row.full_name if row else target}",
+            username=target,
+        )
+        return CheckoutResult(
+            ok=True,
+            message=f"Check-out saved for {row.full_name if row else target}.",
+        )
     return CheckoutResult(ok=False, message="Check-out failed.")
 
 

@@ -69,10 +69,6 @@ BURST_WARMUP_READS: int = int(os.environ.get("BURST_WARMUP_READS", "28"))
 BURST_FRAME_SKIP: int = int(os.environ.get("BURST_FRAME_SKIP", "1"))
 BURST_MAX_WIDTH: int = int(os.environ.get("BURST_MAX_WIDTH", "640"))
 
-# Work-day policy: check-ins after this time (HH:MM, 24h) are marked "late".
-WORK_START_TIME: str = os.environ.get("WORK_START_TIME", "09:00")
-
-
 def is_render_env() -> bool:
     return any(k in os.environ for k in ("RENDER", "RENDER_SERVICE_ID"))
 

@@ -16,8 +16,6 @@ services:
         value: /data
       - key: INSIGHTFACE_MODEL
         value: buffalo_sc
-      - key: WORK_START_TIME
-        value: "09:00"
       - key: CORS_ORIGINS
         value: "http://localhost:3000,https://your-frontend.onrender.com"
       - key: SESSION_SIGNING_SECRET

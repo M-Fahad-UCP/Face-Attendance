@@ -227,9 +227,6 @@ export function AttendanceCapture({ onMarked }: Props) {
         <Card>
           <p className="text-sm text-slate-700">
             Checked in at <strong>{todayStatus.check_in_time}</strong>
-            {todayStatus.is_late && (
-              <span className="ml-2 rounded bg-amber-100 px-2 py-0.5 text-amber-800">Late</span>
-            )}
             {todayStatus.checked_out_today && (
               <span className="ml-2">· Out at <strong>{todayStatus.check_out_time}</strong></span>
             )}

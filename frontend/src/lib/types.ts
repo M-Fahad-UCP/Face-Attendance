@@ -45,7 +45,6 @@ export type UserDashboard = {
   full_name: string;
   checked_in_today: boolean;
   checked_out_today: boolean;
-  is_late: boolean;
   check_in_time: string;
   check_out_time: string;
 };

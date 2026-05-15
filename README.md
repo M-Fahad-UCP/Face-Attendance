@@ -53,7 +53,6 @@ Default admin (created on first API start): `admin` / `admin123`
 | Variable | Where | Purpose |
 |----------|--------|---------|
 | `DATA_ROOT` | API | Persistent data root (use `/data` on Render with attached disk) |
-| `WORK_START_TIME` | API | Check-in deadline for late flag, e.g. `09:00` |
 | `SESSION_SIGNING_SECRET` | API | Signed session tokens (set in production) |
 | `CORS_ORIGINS` | API | Comma-separated frontend URLs |
 | `INSIGHTFACE_MODEL` | API | Default `buffalo_sc` |
@@ -61,7 +60,7 @@ Default admin (created on first API start): `admin` / `admin123`
 
 ## New capabilities
 
-- **SQLite attendance** (migrates legacy CSV on first run) with check-in, check-out, and late/on-time status
+- **SQLite attendance** (migrates legacy CSV on first run) with check-in and check-out
 - **Member check-out** from the Attendance page
 - **Face re-enrollment** under member Settings (`POST /api/users/me/face`)
 - **Admin**: edit member profile, manual present today, audit log page

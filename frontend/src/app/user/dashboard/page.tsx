@@ -30,9 +30,7 @@ export default function UserDashboardPage() {
     ? "Not checked in"
     : data.checked_out_today
       ? "Checked out"
-      : data.is_late
-        ? "Checked in (late)"
-        : "Checked in";
+      : "Checked in";
 
   return (
     <ProtectedRoute role="user">
@@ -50,8 +48,7 @@ export default function UserDashboardPage() {
           <Card className="sm:col-span-2">
             {data.checked_in_today ? (
               <p className="text-green-700">
-                You are checked in for today
-                {data.is_late ? " (late arrival)." : "."}
+                You are checked in for today.
                 {!data.checked_out_today && " Remember to check out when you leave."}
               </p>
             ) : (

@@ -9,13 +9,12 @@ from __future__ import annotations
 import csv
 import sqlite3
 from contextlib import contextmanager
-from datetime import datetime
 from pathlib import Path
 from typing import Any, Iterator, Optional
 
 import pandas as pd
 
-from src.config import ATTENDANCE_CSV, ATTENDANCE_DB_PATH, WORK_START_TIME, ensure_directories
+from src.config import ATTENDANCE_CSV, ATTENDANCE_DB_PATH, ensure_directories
 from src.logger import get_logger
 from src.utils import now_iso, today_iso
 
@@ -30,15 +29,6 @@ _COLUMNS = [
     "status",
     "source",
 ]
-
-
-def _is_late(check_in_time: str) -> str:
-    try:
-        start = datetime.strptime(WORK_START_TIME.strip(), "%H:%M").time()
-        actual = datetime.strptime(check_in_time.strip(), "%H:%M:%S").time()
-        return "late" if actual > start else "on_time"
-    except ValueError:
-        return "on_time"
 
 
 @contextmanager
@@ -64,7 +54,7 @@ def init_attendance_db() -> None:
                 date            TEXT NOT NULL,
                 check_in_time   TEXT NOT NULL,
                 check_out_time  TEXT NOT NULL DEFAULT '',
-                status          TEXT NOT NULL DEFAULT 'on_time',
+                status          TEXT NOT NULL DEFAULT 'checked_in',
                 source          TEXT NOT NULL DEFAULT 'face',
                 UNIQUE(username, date)
             );
@@ -102,7 +92,6 @@ def _migrate_csv_if_needed() -> None:
             full_name = (row.get("full_name") or "").strip()
             date = (row.get("date") or "").strip()
             check_in = (row.get("time") or now_iso()).strip()
-            status = _is_late(check_in)
             try:
                 conn.execute(
                     """
@@ -110,7 +99,7 @@ def _migrate_csv_if_needed() -> None:
                     (username, full_name, date, check_in_time, check_out_time, status, source)
                     VALUES (?, ?, ?, ?, '', ?, 'migrated')
                     """,
-                    (username, full_name, date, check_in, status),
+                    (username, full_name, date, check_in, "checked_in"),
                 )
             except sqlite3.Error:
                 continue
@@ -124,7 +113,7 @@ def _row_to_dict(row: sqlite3.Row) -> dict[str, str]:
         "date": str(row["date"]),
         "time": str(row["check_in_time"]),
         "check_out_time": str(row["check_out_time"] or ""),
-        "status": str(row["status"] or "on_time"),
+        "status": str(row["status"] or "checked_in"),
         "source": str(row["source"] or "face"),
     }
 
@@ -161,17 +150,16 @@ def mark_check_in(username: str, full_name: str, *, source: str = "face") -> boo
         return False
     init_attendance_db()
     check_in = now_iso()
-    status = _is_late(check_in)
     with _connect() as conn:
         conn.execute(
             """
             INSERT INTO attendance_records
             (username, full_name, date, check_in_time, check_out_time, status, source)
-            VALUES (?, ?, ?, ?, '', ?, ?)
+            VALUES (?, ?, ?, ?, '', 'checked_in', ?)
             """,
-            (username, full_name, today_iso(), check_in, status, source),
+            (username, full_name, today_iso(), check_in, source),
         )
-    log.info("Check-in: %s (%s) status=%s", username, full_name, status)
+    log.info("Check-in: %s (%s)", username, full_name)
     return True
 
 
@@ -223,7 +211,7 @@ def fetch_dataframe(username: Optional[str] = None) -> pd.DataFrame:
     df["record_status"] = df.apply(
         lambda r: "Checked out"
         if str(r.get("check_out_time", "")).strip()
-        else ("Late" if r.get("status") == "late" else "On time"),
+        else "Checked in",
         axis=1,
     )
     return df

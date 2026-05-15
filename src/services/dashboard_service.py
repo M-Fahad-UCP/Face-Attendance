@@ -42,7 +42,6 @@ def user_dashboard(user: User) -> dict[str, Any]:
         "full_name": user.full_name,
         "checked_in_today": checked_in,
         "checked_out_today": checked_out,
-        "is_late": rec.get("status") == "late" if rec else False,
         "check_in_time": rec.get("time", "") if rec else "",
         "check_out_time": rec.get("check_out_time", "") if rec else "",
     }

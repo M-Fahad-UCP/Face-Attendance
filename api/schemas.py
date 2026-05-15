@@ -89,7 +89,6 @@ class UserDashboardOut(BaseModel):
     full_name: str
     checked_in_today: bool
     checked_out_today: bool = False
-    is_late: bool = False
     check_in_time: str = ""
     check_out_time: str = ""
 

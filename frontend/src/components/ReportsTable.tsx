@@ -145,7 +145,7 @@ export function ReportsTable({
               <th className="p-2">Date</th>
               <th className="p-2">Check-in</th>
               <th className="p-2">Check-out</th>
-              <th className="p-2">Status</th>
+              <th className="p-2">Day status</th>
             </tr>
           </thead>
           <tbody>
@@ -157,7 +157,7 @@ export function ReportsTable({
                 <td className="p-2">{r.date}</td>
                 <td className="p-2">{r.time}</td>
                 <td className="p-2">{r.check_out_time || "—"}</td>
-                <td className="p-2">{r.record_status || r.status || "—"}</td>
+                <td className="p-2">{r.record_status || "—"}</td>
               </tr>
             ))}
           </tbody>
