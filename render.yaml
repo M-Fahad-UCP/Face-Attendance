@@ -1,14 +1,16 @@
 services:
   - type: web
-    name: face-attendance-system
+    name: face-attendance-api
     env: python
     plan: free
     buildCommand: pip install --upgrade pip && pip install -r requirements.txt
-    startCommand: streamlit run app.py --server.port $PORT --server.address 0.0.0.0
+    startCommand: uvicorn api.main:app --host 0.0.0.0 --port $PORT
     envVars:
       - key: PYTHON_VERSION
         value: "3.10.13"
       - key: INSIGHTFACE_MODEL
         value: buffalo_sc
-      - key: STREAMLIT_SERVER_HEADLESS
-        value: "true"
+      - key: CORS_ORIGINS
+        value: "http://localhost:3000,https://your-frontend.vercel.app"
+      - key: SESSION_SIGNING_SECRET
+        generateValue: true

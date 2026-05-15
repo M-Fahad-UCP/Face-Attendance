@@ -71,3 +71,7 @@
 2026-05-14 00:12:52 | INFO | face_attendance.camera | Burst finished: reads=104 yielded=76
 2026-05-14 00:14:14 | INFO | face_attendance.streamlit_session | Session restored from cookie for Fahad
 2026-05-14 00:14:28 | INFO | face_attendance.camera | Burst finished: reads=107 yielded=79
+2026-05-14 01:04:19 | INFO | face_attendance.camera | Burst finished: reads=106 yielded=78
+2026-05-14 01:04:27 | INFO | face_attendance.streamlit_session | Session restored from cookie for Fahad
+2026-05-14 01:05:58 | INFO | face_attendance.camera | Burst finished: reads=86 yielded=58
+2026-05-14 01:06:13 | INFO | face_attendance.camera | Burst finished: reads=107 yielded=79
