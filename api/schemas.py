@@ -75,6 +75,14 @@ class PasswordChangeRequest(BaseModel):
     new_password: str
 
 
+class TodayAttendanceRow(BaseModel):
+    username: str
+    full_name: str
+    check_in_time: str
+    check_out_time: str = ""
+    checked_out: bool = False
+
+
 class AdminDashboardOut(BaseModel):
     total_members: int
     present_today: int
@@ -82,6 +90,7 @@ class AdminDashboardOut(BaseModel):
     avg_match_confidence: Optional[float]
     recent_activity: List[dict[str, Any]]
     weekly_check_ins: List[dict[str, Any]]
+    today_attendance: List[TodayAttendanceRow] = []
 
 
 class UserDashboardOut(BaseModel):

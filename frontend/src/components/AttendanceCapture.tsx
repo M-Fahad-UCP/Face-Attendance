@@ -232,9 +232,15 @@ export function AttendanceCapture({ onMarked }: Props) {
             )}
           </p>
           {!todayStatus.checked_out_today && (
-            <Button className="mt-3" onClick={checkOut} disabled={loading}>
-              Check out now
-            </Button>
+            <>
+              <p className="mt-2 text-xs text-slate-500">
+                Use <strong>Sign out</strong> in the sidebar when you leave — your check-out time
+                is saved automatically.
+              </p>
+              <Button className="mt-3" variant="secondary" onClick={checkOut} disabled={loading}>
+                Check out now (stay signed in)
+              </Button>
+            </>
           )}
         </Card>
       )}

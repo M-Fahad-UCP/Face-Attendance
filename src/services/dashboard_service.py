@@ -14,6 +14,30 @@ from src.services.reports_service import events_to_rows
 from src.utils import today_iso
 
 
+def today_attendance_roster() -> list[dict[str, Any]]:
+    df = get_attendance()
+    if df is None or df.empty:
+        return []
+    today = today_iso()
+    today_df = df[df["date"].astype(str) == today]
+    if today_df.empty:
+        return []
+    rows: list[dict[str, Any]] = []
+    for _, row in today_df.iterrows():
+        check_out = str(row.get("check_out_time", "") or "").strip()
+        rows.append(
+            {
+                "username": str(row["username"]),
+                "full_name": str(row["full_name"]),
+                "check_in_time": str(row.get("time", "") or ""),
+                "check_out_time": check_out,
+                "checked_out": bool(check_out),
+            }
+        )
+    rows.sort(key=lambda r: str(r["full_name"]).lower())
+    return rows
+
+
 def admin_dashboard(*, match_scores: List[float] | None = None) -> dict[str, Any]:
     users = list_users()
     clients = [u for u in users if u.role == ROLE_USER]
@@ -30,6 +54,7 @@ def admin_dashboard(*, match_scores: List[float] | None = None) -> dict[str, Any
         "absent_estimate": absent,
         "avg_match_confidence": avg_conf,
         "recent_activity": events_to_rows(recent_events(25)),
+        "today_attendance": today_attendance_roster(),
     }
 
 

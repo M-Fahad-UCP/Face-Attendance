@@ -10,6 +10,8 @@ from src.config import (
     SESSION_TIMEOUT_SECONDS,
     is_production_env,
 )
+from src.activity_log import append_event
+from src.services.attendance_service import checkout_on_signout
 from src.services.login_guard import clear_failed_attempts, is_locked, register_failed_attempt
 from src.services.signup_service import SignupError, complete_signup
 
@@ -53,7 +55,11 @@ def login(body: LoginRequest, response: Response) -> LoginResponse:
 
 
 @router.post("/logout", response_model=MessageResponse)
-def logout(response: Response, _: auth.User = Depends(get_current_user)) -> MessageResponse:
+def logout(response: Response, user: auth.User = Depends(get_current_user)) -> MessageResponse:
+    if checkout_on_signout(user):
+        append_event("auth", "Signed out (check-out recorded)", username=user.username)
+    else:
+        append_event("auth", "Signed out", username=user.username)
     response.delete_cookie(SESSION_COOKIE_NAME, path="/")
     return MessageResponse(message="Signed out.")
 

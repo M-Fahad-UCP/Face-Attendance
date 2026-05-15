@@ -87,6 +87,30 @@ def mark_for_username(actor: User, recognized_username: str) -> MarkResult:
     )
 
 
+def _perform_checkout(username: str, *, via_signout: bool = False) -> bool:
+    if not already_marked_today(username):
+        return False
+    if has_checked_out_today(username):
+        return False
+    row = auth.get_user_by_username(username)
+    if not mark_check_out(username):
+        return False
+    name = row.full_name if row else username
+    if via_signout:
+        summary = f"Member checked out on sign-out: {name}"
+    else:
+        summary = f"Member checked out: {name}"
+    append_event("attendance", summary, username=username)
+    return True
+
+
+def checkout_on_signout(user: User) -> bool:
+    """Record check-out when a member signs out (best-effort)."""
+    if user.role != ROLE_USER:
+        return False
+    return _perform_checkout(user.username, via_signout=True)
+
+
 def checkout_user(actor: User, username: Optional[str] = None) -> CheckoutResult:
     target = username or actor.username
     if actor.role == ROLE_USER and target != actor.username:
@@ -100,12 +124,7 @@ def checkout_user(actor: User, username: Optional[str] = None) -> CheckoutResult
         return CheckoutResult(ok=False, message="Already checked out for today.")
 
     row = auth.get_user_by_username(target)
-    if mark_check_out(target):
-        append_event(
-            "attendance",
-            f"Member checked out: {row.full_name if row else target}",
-            username=target,
-        )
+    if _perform_checkout(target):
         return CheckoutResult(
             ok=True,
             message=f"Check-out saved for {row.full_name if row else target}.",

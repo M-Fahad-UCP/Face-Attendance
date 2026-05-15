@@ -49,7 +49,8 @@ export default function UserDashboardPage() {
             {data.checked_in_today ? (
               <p className="text-green-700">
                 You are checked in for today.
-                {!data.checked_out_today && " Remember to check out when you leave."}
+                {!data.checked_out_today &&
+                  " Sign out when you leave to record your check-out time."}
               </p>
             ) : (
               <p className="text-slate-600">
