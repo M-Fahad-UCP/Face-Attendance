@@ -55,7 +55,10 @@ def already_marked_today(username: str) -> bool:
     if df.empty:
         return False
     today = today_iso()
-    return bool(((df["username"] == username) & (df["date"] == today)).any())
+    uname = (username or "").strip().lower()
+    users = df["username"].astype(str).str.strip().str.lower()
+    dates = df["date"].astype(str).str.strip()
+    return bool(((users == uname) & (dates == today)).any())
 
 
 def mark_attendance(username: str, full_name: str) -> bool:

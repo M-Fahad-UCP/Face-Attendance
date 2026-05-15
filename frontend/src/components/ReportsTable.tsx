@@ -6,14 +6,22 @@ import type { AttendanceRecord } from "@/lib/types";
 import { Button, Input, Label } from "./ui";
 import { useAuth } from "@/lib/auth-context";
 
-export function ReportsTable() {
+export function ReportsTable({
+  defaultTodayOnly = false,
+  showExport = true,
+  title,
+}: {
+  defaultTodayOnly?: boolean;
+  showExport?: boolean;
+  title?: string;
+} = {}) {
   const { user } = useAuth();
   const isAdmin = user?.role === "admin";
   const [records, setRecords] = useState<AttendanceRecord[]>([]);
   const [q, setQ] = useState("");
   const [dateFrom, setDateFrom] = useState("");
   const [dateTo, setDateTo] = useState("");
-  const [todayOnly, setTodayOnly] = useState(false);
+  const [todayOnly, setTodayOnly] = useState(defaultTodayOnly);
   const [department] = useState("(All)");
   const [memberFilter, setMemberFilter] = useState("");
 
@@ -59,7 +67,7 @@ export function ReportsTable() {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold">Reports</h1>
+      <h1 className="text-2xl font-bold">{title ?? "Reports"}</h1>
       <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
         <div>
           <Label>Search</Label>
@@ -87,14 +95,16 @@ export function ReportsTable() {
       <Button className="mt-3" onClick={load}>
         Apply filters
       </Button>
-      <div className="mt-4 flex gap-2">
-        <Button variant="secondary" onClick={downloadCsv}>
-          Export full CSV
-        </Button>
-        <Button variant="secondary" onClick={downloadExcel}>
-          Export filtered Excel
-        </Button>
-      </div>
+      {showExport && (
+        <div className="mt-4 flex gap-2">
+          <Button variant="secondary" onClick={downloadCsv}>
+            Export full CSV
+          </Button>
+          <Button variant="secondary" onClick={downloadExcel}>
+            Export filtered Excel
+          </Button>
+        </div>
+      )}
       <div className="mt-4 overflow-x-auto rounded-lg border bg-white">
         <table className="min-w-full text-sm">
           <thead className="bg-slate-50 text-left">

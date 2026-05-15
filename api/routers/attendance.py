@@ -51,11 +51,20 @@ def list_attendance(
     return {"records": dataframe_to_records(view), "total": len(view)}
 
 
+def _reject_admin_mark(user: auth.User) -> None:
+    if user.role == ROLE_ADMIN:
+        raise HTTPException(
+            403,
+            "Administrators can view attendance in Reports — only members can check in.",
+        )
+
+
 @router.post("/mark", response_model=MarkAttendanceResponse)
 def mark_attendance_body(
     body: MarkAttendanceRequest,
     user: auth.User = Depends(get_current_user),
 ) -> MarkAttendanceResponse:
+    _reject_admin_mark(user)
     if not body.username:
         raise HTTPException(400, "username is required when marking without an image.")
     result = mark_for_username(user, body.username)
@@ -73,6 +82,7 @@ async def mark_from_image(
     image: UploadFile = File(...),
     user: auth.User = Depends(get_current_user),
 ) -> MarkAttendanceResponse:
+    _reject_admin_mark(user)
     data = await image.read()
     if not data:
         raise HTTPException(400, "Empty image.")

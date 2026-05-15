@@ -7,7 +7,7 @@ import { Button } from "./ui";
 
 const ADMIN_NAV = [
   { href: "/admin/dashboard", label: "Dashboard" },
-  { href: "/admin/attendance", label: "Attendance" },
+  { href: "/admin/attendance", label: "View attendance" },
   { href: "/admin/members", label: "Members" },
   { href: "/admin/reports", label: "Reports" },
   { href: "/admin/analytics", label: "Analytics" },

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
 import { Card, Metric } from "@/components/ui";
 import { api } from "@/lib/api";
@@ -14,9 +14,18 @@ type UserDash = {
 export default function UserDashboardPage() {
   const [data, setData] = useState<UserDash | null>(null);
 
-  useEffect(() => {
-    api<UserDash>("/api/dashboard/user").then(setData).catch(console.error);
+  const load = useCallback(() => {
+    api<UserDash>("/api/dashboard/user")
+      .then(setData)
+      .catch(console.error);
   }, []);
+
+  useEffect(() => {
+    load();
+    const onFocus = () => load();
+    window.addEventListener("focus", onFocus);
+    return () => window.removeEventListener("focus", onFocus);
+  }, [load]);
 
   return (
     <ProtectedRoute role="user">

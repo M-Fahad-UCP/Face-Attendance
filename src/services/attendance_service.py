@@ -45,8 +45,8 @@ def mark_for_username(actor: User, recognized_username: str) -> MarkResult:
 
     if already_marked_today(recognized_username):
         return MarkResult(
-            ok=False,
-            message=f"{recognized_username} already marked today.",
+            ok=True,
+            message=f"Already checked in today for {row.full_name}.",
             username=recognized_username,
             full_name=row.full_name,
             already_today=True,
