@@ -29,22 +29,24 @@ export default function AdminAnalyticsPage() {
           {data.top_members.length > 0 && (
             <div className="mt-8">
               <h2 className="font-semibold">Top members by check-ins</h2>
-              <table className="mt-2 min-w-full text-sm">
-                <thead>
-                  <tr className="text-left">
-                    <th className="p-2">Username</th>
-                    <th className="p-2">Check-ins</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {data.top_members.map((m) => (
-                    <tr key={m.username} className="border-t">
-                      <td className="p-2">{m.username}</td>
-                      <td className="p-2">{m.check_ins}</td>
+              <div className="mt-2 overflow-x-auto rounded-lg border bg-white">
+                <table className="min-w-full text-sm">
+                  <thead className="bg-slate-50">
+                    <tr className="text-left">
+                      <th className="p-2">Username</th>
+                      <th className="p-2">Check-ins</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
+                  </thead>
+                  <tbody>
+                    {data.top_members.map((m) => (
+                      <tr key={m.username} className="border-t">
+                        <td className="p-2">{m.username}</td>
+                        <td className="p-2">{m.check_ins}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
             </div>
           )}
         </>
