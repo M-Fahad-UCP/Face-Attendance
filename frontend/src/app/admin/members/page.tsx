@@ -163,17 +163,17 @@ export default function AdminMembersPage() {
           {filtered.map((m) => (
             <li
               key={m.username}
-              className="flex items-center justify-between rounded-lg border bg-white p-4"
+              className="flex flex-col gap-3 rounded-lg border bg-white p-4 sm:flex-row sm:items-center sm:justify-between"
             >
-              <div>
-                <p className="font-medium">{m.username}</p>
-                <p className="text-sm text-slate-600">{m.full_name}</p>
-                <p className="text-xs text-slate-400">{m.department || "—"}</p>
+              <div className="min-w-0">
+                <p className="truncate font-medium">{m.username}</p>
+                <p className="truncate text-sm text-slate-600">{m.full_name}</p>
+                <p className="truncate text-xs text-slate-400">{m.department || "—"}</p>
                 <p className="text-xs">
                   {m.has_face_template ? "Face template OK" : "Missing template"}
                 </p>
               </div>
-              <div className="flex gap-2">
+              <div className="flex flex-wrap gap-2 sm:shrink-0">
                 <Button
                   variant="secondary"
                   onClick={() => {
