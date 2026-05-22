@@ -76,11 +76,20 @@ Default admin (created on first API start): `admin` / `admin123`
 uvicorn api.main:app --host 0.0.0.0 --port $PORT
 ```
 
-Set `CORS_ORIGINS` to your Vercel/frontend URL and `SESSION_SIGNING_SECRET`.
+Set `CORS_ORIGINS` to your frontend URL and `SESSION_SIGNING_SECRET`.
 
-### Frontend (Vercel or similar)
+### Frontend (Render)
 
-Deploy `frontend/` with `NEXT_PUBLIC_API_URL` pointing at the Render API URL.
+Deploy `frontend/` as a Render **Web Service**:
+
+| Setting | Value |
+|---------|-------|
+| Root Directory | `frontend` |
+| Build Command | `npm install && npm run build` |
+| Start Command | `npm start` |
+| Environment | `NEXT_PUBLIC_API_URL` → the Render API URL above |
+
+Use Node 20+ (set `NODE_VERSION=20` in Environment if Render's default differs).
 
 ## Features
 
