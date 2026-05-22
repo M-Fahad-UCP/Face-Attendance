@@ -2,6 +2,329 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ============================================================
+   Design tokens (modern dark theme)
+   ============================================================ */
+:root {
+  color-scheme: dark;
+
+  --bg-canvas: #07070b;
+  --bg-canvas-2: #0b0b12;
+  --bg-surface: #11111a;
+  --bg-surface-2: #161622;
+  --bg-surface-hover: #1c1c2a;
+  --bg-elevated: #1a1a27;
+
+  --border: #232333;
+  --border-strong: #2f2f44;
+  --border-soft: rgba(255, 255, 255, 0.06);
+
+  --text-primary: #f5f5fb;
+  --text-secondary: #b9b9c8;
+  --text-tertiary: #8a8a9c;
+  --text-muted: #5d5d70;
+
+  --accent: #6366f1;
+  --accent-2: #8b5cf6;
+  --accent-soft: rgba(99, 102, 241, 0.12);
+  --accent-soft-2: rgba(139, 92, 246, 0.15);
+  --accent-glow: 0 8px 32px -8px rgba(99, 102, 241, 0.55);
+  --accent-ring: rgba(99, 102, 241, 0.35);
+
+  --success: #34d399;
+  --success-surface: rgba(52, 211, 153, 0.10);
+  --warning: #fbbf24;
+  --warning-surface: rgba(251, 191, 36, 0.10);
+  --danger: #f87171;
+  --danger-surface: rgba(248, 113, 113, 0.10);
+}
+
+/* ============================================================
+   Global base
+   ============================================================ */
+html,
 body {
-  @apply bg-slate-50 text-slate-900 antialiased;
+  background: var(--bg-canvas);
+  color: var(--text-primary);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  @apply antialiased;
+  background:
+    radial-gradient(1200px 600px at 80% -10%, rgba(99, 102, 241, 0.12), transparent 60%),
+    radial-gradient(900px 500px at -10% 10%, rgba(139, 92, 246, 0.10), transparent 60%),
+    var(--bg-canvas);
+  background-attachment: fixed;
+  font-feature-settings: "ss01", "cv11";
+}
+
+::selection {
+  background: var(--accent-soft);
+  color: var(--text-primary);
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border-strong);
+  border-radius: 8px;
+  border: 2px solid var(--bg-canvas);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent);
+}
+
+/* Better focus rings everywhere */
+*:focus-visible {
+  outline: 2px solid var(--accent-ring);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+/* ============================================================
+   Tailwind class remapping — keeps existing markup dark
+   (placed AFTER @tailwind utilities so cascade wins)
+   ============================================================ */
+
+/* Surfaces */
+.bg-white { background-color: var(--bg-surface) !important; }
+.bg-slate-50 { background-color: var(--bg-surface-2) !important; }
+.bg-slate-100 { background-color: var(--bg-surface-hover) !important; }
+.bg-slate-900 { background-color: #050509 !important; }
+
+/* Text colors */
+.text-slate-900 { color: var(--text-primary) !important; }
+.text-slate-800 { color: var(--text-primary) !important; }
+.text-slate-700 { color: var(--text-secondary) !important; }
+.text-slate-600 { color: var(--text-secondary) !important; }
+.text-slate-500 { color: var(--text-tertiary) !important; }
+.text-slate-400 { color: var(--text-muted) !important; }
+.text-slate-100 { color: var(--text-primary) !important; }
+
+/* Borders */
+.border { border-color: var(--border) !important; }
+.border-slate-200 { border-color: var(--border) !important; }
+.border-slate-300 { border-color: var(--border-strong) !important; }
+.border-t { border-top-color: var(--border) !important; }
+.border-b { border-bottom-color: var(--border) !important; }
+.border-r { border-right-color: var(--border) !important; }
+.border-l { border-left-color: var(--border) !important; }
+
+/* Accent — keep brand visible on dark */
+.text-indigo-600 { color: #a5b4fc !important; }
+.text-indigo-700 { color: #c7d2fe !important; }
+.bg-indigo-50 { background-color: var(--accent-soft) !important; }
+.bg-indigo-600 { background-color: var(--accent) !important; }
+.bg-indigo-700 { background-color: #4f46e5 !important; }
+.hover\:bg-indigo-700:hover { background-color: #4f46e5 !important; }
+.hover\:bg-slate-50:hover { background-color: var(--bg-surface-hover) !important; }
+.hover\:bg-slate-100:hover { background-color: var(--bg-surface-hover) !important; }
+
+/* Status colors — dark surfaces with light foreground */
+.bg-green-50 { background-color: var(--success-surface) !important; }
+.text-green-700 { color: var(--success) !important; }
+.text-green-800 { color: var(--success) !important; }
+.bg-amber-50 { background-color: var(--warning-surface) !important; }
+.text-amber-700 { color: var(--warning) !important; }
+.text-amber-800 { color: var(--warning) !important; }
+.bg-red-50 { background-color: var(--danger-surface) !important; }
+.text-red-600 { color: var(--danger) !important; }
+.text-red-700 { color: var(--danger) !important; }
+.bg-red-600 { background-color: #dc2626 !important; }
+.hover\:bg-red-700:hover { background-color: #b91c1c !important; }
+.border-red-200 { border-color: rgba(248, 113, 113, 0.4) !important; }
+
+/* Gradient login backdrop — re-tint */
+.from-slate-50 { --tw-gradient-from: var(--bg-canvas) var(--tw-gradient-from-position) !important; --tw-gradient-to: rgb(7 7 11 / 0) var(--tw-gradient-to-position) !important; --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to) !important; }
+.to-indigo-50 { --tw-gradient-to: rgba(99, 102, 241, 0.08) var(--tw-gradient-to-position) !important; }
+
+/* Inputs (range/checkbox accent) */
+input[type="checkbox"],
+input[type="range"] {
+  accent-color: var(--accent);
+}
+
+/* Native inputs that aren't wrapped by our <Input> component */
+input[type="file"] {
+  color: var(--text-secondary);
+}
+input[type="file"]::file-selector-button {
+  background: var(--bg-surface-2);
+  border: 1px solid var(--border-strong);
+  color: var(--text-primary);
+  border-radius: 8px;
+  padding: 6px 12px;
+  margin-right: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+input[type="file"]::file-selector-button:hover {
+  background: var(--bg-surface-hover);
+  border-color: var(--accent);
+}
+
+select {
+  background-color: var(--bg-surface) !important;
+  color: var(--text-primary) !important;
+  border-color: var(--border-strong) !important;
+}
+select option {
+  background-color: var(--bg-surface);
+  color: var(--text-primary);
+}
+
+/* Shadow tweaks — soften on dark */
+.shadow-sm {
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.03) inset,
+    0 1px 2px rgba(0, 0, 0, 0.35) !important;
+}
+
+/* Table polish */
+table thead {
+  position: relative;
+}
+table thead th {
+  font-weight: 600;
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  padding: 12px 14px !important;
+}
+table tbody td {
+  padding: 12px 14px !important;
+  color: var(--text-secondary);
+}
+table tbody tr {
+  transition: background-color 0.15s ease;
+}
+table tbody tr:hover {
+  background: var(--bg-surface-hover);
+}
+
+/* pre / code blocks (system logs) */
+pre {
+  border: 1px solid var(--border);
+  background: #050509 !important;
+  color: var(--text-secondary) !important;
+  border-radius: 10px;
+}
+
+/* Headings auto-styling for h1/h2 inside dashboard pages */
+h1.text-2xl {
+  letter-spacing: -0.02em;
+}
+
+/* Smooth image fade */
+img {
+  transition: opacity 0.25s ease;
+}
+
+/* ============================================================
+   Reusable utility classes for the new component pass
+   ============================================================ */
+@layer utilities {
+  .surface-card {
+    background: linear-gradient(180deg, var(--bg-surface) 0%, var(--bg-surface-2) 100%);
+    border: 1px solid var(--border);
+    box-shadow:
+      0 1px 0 rgba(255, 255, 255, 0.04) inset,
+      0 24px 48px -24px rgba(0, 0, 0, 0.6);
+  }
+
+  .surface-card-hover {
+    transition:
+      transform 0.18s ease,
+      border-color 0.18s ease,
+      box-shadow 0.18s ease;
+  }
+  .surface-card-hover:hover {
+    transform: translateY(-2px);
+    border-color: var(--border-strong);
+    box-shadow:
+      0 1px 0 rgba(255, 255, 255, 0.05) inset,
+      0 32px 60px -28px rgba(0, 0, 0, 0.65);
+  }
+
+  .accent-gradient {
+    background: linear-gradient(135deg, var(--accent) 0%, var(--accent-2) 100%);
+  }
+
+  .accent-text {
+    background: linear-gradient(135deg, #a5b4fc 0%, #c4b5fd 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .glass {
+    background: rgba(17, 17, 26, 0.7);
+    backdrop-filter: blur(12px) saturate(140%);
+    -webkit-backdrop-filter: blur(12px) saturate(140%);
+    border: 1px solid var(--border-soft);
+  }
+
+  .ring-accent {
+    box-shadow: 0 0 0 1px var(--border-strong), var(--accent-glow);
+  }
+
+  /* Shimmer for skeleton loaders */
+  .shimmer {
+    position: relative;
+    overflow: hidden;
+    background: var(--bg-surface-2);
+  }
+  .shimmer::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(255, 255, 255, 0.04) 50%,
+      transparent 100%
+    );
+    animation: shimmer-slide 1.4s linear infinite;
+  }
+  @keyframes shimmer-slide {
+    from { transform: translateX(-100%); }
+    to   { transform: translateX(100%); }
+  }
+
+  .spinner-ring {
+    width: 1.1em;
+    height: 1.1em;
+    border: 2px solid rgba(255, 255, 255, 0.18);
+    border-top-color: currentColor;
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+    display: inline-block;
+  }
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+}
+
+/* Respect prefers-reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  .shimmer::after { animation: none; }
 }
