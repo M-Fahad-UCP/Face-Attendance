@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/lib/auth-context";
 import { AppShell } from "./AppShell";
+import { Spinner } from "./ui";
 
 export function ProtectedRoute({
   children,
@@ -28,8 +29,9 @@ export function ProtectedRoute({
 
   if (loading || !user) {
     return (
-      <div className="flex min-h-screen items-center justify-center text-slate-500">
-        Loading…
+      <div className="flex min-h-screen flex-col items-center justify-center gap-3 text-[var(--text-tertiary)]">
+        <Spinner className="!h-6 !w-6 text-[var(--accent)]" />
+        <p className="text-sm">Loading…</p>
       </div>
     );
   }
